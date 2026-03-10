@@ -214,7 +214,7 @@ async function callAI(prompt, btnId, loadId, outId, textId) {
   document.getElementById(loadId).style.display = 'block';
   document.getElementById(outId).classList.remove('show');
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/claude', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] })
     });
