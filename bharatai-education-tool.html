@@ -209,24 +209,11 @@ function selSubj(el, subj) {
   selSubject = subj;
 }
 
-async function callAI(prompt, btnId, loadId, outId, textId) {
-  document.getElementById(btnId).disabled = true;
-  document.getElementById(loadId).style.display = 'block';
-  document.getElementById(outId).classList.remove('show');
-  try {
-    const res = await fetch('/.netlify/functions/claude', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] })
-    });
-    const data = await res.json();
-    document.getElementById(textId).textContent = data.content?.[0]?.text || 'Error आया।';
-    document.getElementById(outId).classList.add('show');
-  } catch(e) {
-    document.getElementById(textId).textContent = 'Connection error। WhatsApp: 8210684331';
-    document.getElementById(outId).classList.add('show');
-  }
-  document.getElementById(loadId).style.display = 'none';
-  document.getElementById(btnId).disabled = false;
+function callAI(prompt, btnId, loadId, outId, textId) {
+  const waMsg = encodeURIComponent('🎓 BharatAI Pro - Education\n\n' + prompt);
+  const waURL = 'https://wa.me/918210684331?text=' + waMsg;
+  document.getElementById(textId).innerHTML = `✅ आपका सवाल तैयार है!<br><br><a href="${waURL}" target="_blank" style="display:inline-block;background:#25D366;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:8px;">📱 WhatsApp पर जवाब पाएं</a><br><br><small style="color:#aaa;">हमारे AI Teacher 2-5 मिनट में Hindi में जवाब देंगे।</small>`;
+  document.getElementById(outId).classList.add('show');
 }
 
 function askTutor() {
