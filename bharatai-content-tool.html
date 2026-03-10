@@ -164,40 +164,21 @@ const langInstructions = {
   both: 'पहले हिंदी में लिखें, फिर English में। दोनों versions दें।'
 };
 
-async function generateContent() {
+function generateContent() {
   const topic = document.getElementById('topic').value.trim();
   if (!topic) { alert('Topic जरूर भरें।'); return; }
-  
-  document.getElementById('genBtn').disabled = true;
-  document.getElementById('loading').style.display = 'block';
-  document.getElementById('outputCard').classList.remove('show');
+  const details = document.getElementById('details').value || 'कोई नहीं';
+  const msg = '✍️ BharatAI Pro - Content Tool
 
-  const prompt = `तुम एक professional content writer हो जो Indian businesses के लिए content लिखते हो।
+Type: ' + typeNames[selectedType] + '
+Topic: ' + topic + '
+Details: ' + details + '
+Language: ' + selectedLang + '
 
-Task: ${typeNames[selectedType]} लिखो
-Topic/Business: ${topic}
-Extra details: ${document.getElementById('details').value || 'कोई नहीं'}
-Language instruction: ${langInstructions[selectedLang]}
-
-High-quality, engaging, और conversion-focused content लिखो। Emojis use करो जहाँ appropriate हो।`;
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || 'Error आया। फिर try करें।';
-    document.getElementById('outputText').textContent = text;
-    document.getElementById('outputCard').classList.add('show');
-  } catch(e) {
-    document.getElementById('outputText').textContent = 'Connection error। WhatsApp पर contact करें: 8210684331';
-    document.getElementById('outputCard').classList.add('show');
-  }
-  
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('genBtn').disabled = false;
+कृपया यह content बनाएं।';
+  const waURL = 'https://wa.me/918210684331?text=' + encodeURIComponent(msg);
+  document.getElementById('outputText').innerHTML = '✅ आपकी request तैयार है!<br><br><a href="' + waURL + '" target="_blank" style="display:inline-block;background:#25D366;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;margin-top:8px;">📱 WhatsApp पर Content पाएं</a><br><br><small style="color:#aaa;">हमारी Content Team 2-5 मिनट में आपका content भेजेगी।</small>';
+  document.getElementById('outputCard').classList.add('show');
 }
 
 function copyContent() {
